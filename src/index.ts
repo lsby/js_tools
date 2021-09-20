@@ -181,7 +181,7 @@ export function 数组等价去重<A>(数组: A[]) {
  * ]
  * ```
  */
-export function 对象构造表<A extends { [key: string]: unknown[] }>(输入: A): { [K in keyof A]: A[K] }[] {
+export function 对象构造表<A extends { [key: string]: unknown[] }>(输入: A): { [K in keyof A]: A[K][0] }[] {
     var 字段 = Object.keys(输入)
     var 值 = Object.values(输入)
     var 行数 = 值[0].length
