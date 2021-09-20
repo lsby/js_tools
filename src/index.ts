@@ -64,12 +64,13 @@ export function 合并表<A extends { [key: string]: string | number | boolean }
     主字段: B,
 ): { [key: string]: { [K in keyof A]: A[K][] } } {
     return [...new Set(输入表.map((a) => a[主字段]))]
+        .filter((a) => a != null)
         .map((a) => a.toString())
         .reduce((s, 主字段值) => {
             var 子表 = 输入表.filter((b) => b[主字段] == 主字段值)
             var 列名们 = Object.keys(输入表[0])
             var 合并后对象 = 列名们.reduce((s, 列名) => {
-                var 合并的数组 = [...new Set(子表.map((a) => a[列名]))]
+                var 合并的数组 = [...new Set(子表.map((a) => a[列名]))].filter((a) => a != null)
                 return { ...s, [列名]: 合并的数组 }
             }, {} as { [K in keyof A]: A[K][] })
             return { ...s, [主字段值]: 合并后对象 }
