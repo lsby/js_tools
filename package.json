@@ -1,6 +1,6 @@
 {
     "name": "@lsby/js_tools",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "main": "dist/index.js",
     "scripts": {
         "dev": "npm run watch",
@@ -17,6 +17,7 @@
     "author": "",
     "devDependencies": {
         "@lsby/js_tools": "^0.0.3",
+        "@types/lodash": "^4.14.173",
         "@types/mocha": "^8.2.2",
         "nyc": "^15.1.0",
         "ts-mocha": "^8.0.0",
@@ -36,5 +37,8 @@
         "url": "https://github.com/lsby/js_tools/issues"
     },
     "homepage": "https://github.com/lsby/js_tools#readme",
-    "description": ""
+    "description": "",
+    "dependencies": {
+        "lodash": "^4.17.21"
+    }
 }

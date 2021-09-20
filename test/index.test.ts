@@ -41,18 +41,33 @@ it('合并表', async function () {
     )
 })
 it('对表合并行', async function () {
-    var 表 = [
+    var 表1 = [
         { id: 1, 姓名: 'a', 标签: 'a1' },
         { id: 1, 姓名: 'a', 标签: 'a2' },
         { id: 1, 姓名: 'a', 标签: 'a3' },
         { id: 2, 姓名: 'b', 标签: 'b1' },
     ]
-    var 合并后 = tools.对表合并行(表, 'id')
+    var 合并后1 = tools.对表合并行(表1, 'id')
     tools.断言相等(
-        JSON.stringify(合并后),
+        JSON.stringify(合并后1),
         JSON.stringify([
             { id: [1], 姓名: ['a'], 标签: ['a1', 'a2', 'a3'] },
             { id: [2], 姓名: ['b'], 标签: ['b1'] },
+        ]),
+    )
+
+    var 表2 = [
+        { id: [1], 姓名: 'a', 标签: 'a1' },
+        { id: [1], 姓名: 'a', 标签: 'a2' },
+        { id: [1], 姓名: 'a', 标签: 'a3' },
+        { id: [2], 姓名: 'b', 标签: 'b1' },
+    ]
+    var 合并后2 = tools.对表合并行(表2, 'id')
+    tools.断言相等(
+        JSON.stringify(合并后2),
+        JSON.stringify([
+            { id: [[1]], 姓名: ['a'], 标签: ['a1', 'a2', 'a3'] },
+            { id: [[2]], 姓名: ['b'], 标签: ['b1'] },
         ]),
     )
 })

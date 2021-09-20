@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export function 断言相等(变量: Number | Boolean | String, 值: Number | Boolean | String) {
     var 变量类型 = typeof 变量
     var 值类型 = typeof 值
@@ -114,7 +116,7 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
 }
 
 /**
- * 按主字段合并表中的行
+ * 按主字段合并表中的行, 并合并相同的字段.
  *
  * 表:
  * ```
@@ -134,20 +136,27 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
  * ]
  * ```
  */
-export function 对表合并行<A extends { [key: string]: any }, B extends keyof A>(
+export function 对表合并行<A extends { [key: string]: unknown }, B extends keyof A>(
     输入表: A[],
     主字段: B,
 ): { [K in keyof A]: A[K][] }[] {
-    return [...new Set(输入表.map((a) => a[主字段]))]
+    return 数组等价去重(输入表.map((a) => a[主字段]))
         .filter((a) => a != null)
-        .map((a) => a.toString())
         .map((主字段值) => {
-            var 子表 = 输入表.filter((b) => b[主字段] == 主字段值)
+            var 子表 = 输入表.filter((b) => 等价(b[主字段], 主字段值))
             var 列名们 = Object.keys(输入表[0])
             var 合并后对象 = 列名们.reduce((s, 列名) => {
-                var 合并的数组 = [...new Set(子表.map((a) => a[列名]))].filter((a) => a != null)
+                var 合并的数组 = 数组等价去重(子表.map((a) => a[列名])).filter((a) => a != null)
                 return { ...s, [列名]: 合并的数组 }
             }, {} as { [K in keyof A]: A[K][] })
             return 合并后对象
         })
+}
+
+export function 等价<A>(a: A, b: A) {
+    return JSON.stringify(a) == JSON.stringify(b)
+}
+
+export function 数组等价去重<A>(数组: A[]) {
+    return _.uniqWith(数组, 等价)
 }
