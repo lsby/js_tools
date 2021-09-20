@@ -116,7 +116,7 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
 }
 
 /**
- * 按主字段合并表中的行.
+ * 按主字段合并表中的行, 并合并给定的合并字段为数组.
  *
  * 表:
  * ```
@@ -128,30 +128,32 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
  * ]
  * ```
  *
- * 以id为主字段合并后:
+ * 以id为主字段, 以['标签']为合并字段, 合并后:
  * ```
  * [
- *  { id: [1, 1, 1], 姓名: ['a', 'a', 'a'], 标签: ['a1', 'a2', 'a3'] },
- *  { id: [2], 姓名: ['b'], 标签: ['b1'] },
+ *  { id: 1, 姓名: 'a', 标签: ['a1', 'a2', 'a3'] },
+ *  { id: 2, 姓名: 'b', 标签: ['b1'] },
  * ]
  * ```
  */
-export function 对表合并行<A extends { [key: string]: unknown }, B extends keyof A>(
-    输入表: A[],
-    主字段: B,
-): { [K in keyof A]: A[K][] }[] {
+export function 对表合并行<
+    A extends { [key: string]: unknown },
+    B extends keyof A,
+    C extends { [K in keyof A]?: true },
+>(输入表: A[], 主字段: B, 合并字段: C): { [K in keyof A]: 对表合并行_返回值计算<C, K, A> }[] {
     return 数组等价去重(输入表.map((a) => a[主字段]))
         .filter((a) => a != null)
         .map((主字段值) => {
             var 子表 = 输入表.filter((b) => 等价(b[主字段], 主字段值))
             var 列名们 = Object.keys(输入表[0])
             var 合并后对象 = 列名们.reduce((s, 列名) => {
-                var 合并的数组 = 子表.map((a) => a[列名]).filter((a) => a != null)
-                return { ...s, [列名]: 合并的数组 }
+                var 结果数组 = 子表.map((a) => a[列名]).filter((a) => a != null)
+                return { ...s, [列名]: !合并字段[列名] ? 结果数组[0] : 结果数组 }
             }, {} as { [K in keyof A]: A[K][] })
             return 合并后对象
-        })
+        }) as any
 }
+type 对表合并行_返回值计算<C, K extends keyof A, A> = K extends keyof C ? A[K][] : A[K]
 
 export function 等价<A>(a: A, b: A) {
     return JSON.stringify(a) == JSON.stringify(b)
