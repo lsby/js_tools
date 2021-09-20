@@ -116,7 +116,7 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
 }
 
 /**
- * 按主字段合并表中的行, 并合并相同的值.
+ * 按主字段合并表中的行.
  *
  * 表:
  * ```
@@ -131,7 +131,7 @@ export function 数组缝合<A, B>(数组1: A[], 数组2: B[]) {
  * 以id为主字段合并后:
  * ```
  * [
- *  { id: [1], 姓名: ['a'], 标签: ['a1', 'a2', 'a3'] },
+ *  { id: [1, 1, 1], 姓名: ['a', 'a', 'a'], 标签: ['a1', 'a2', 'a3'] },
  *  { id: [2], 姓名: ['b'], 标签: ['b1'] },
  * ]
  * ```
@@ -146,7 +146,7 @@ export function 对表合并行<A extends { [key: string]: unknown }, B extends 
             var 子表 = 输入表.filter((b) => 等价(b[主字段], 主字段值))
             var 列名们 = Object.keys(输入表[0])
             var 合并后对象 = 列名们.reduce((s, 列名) => {
-                var 合并的数组 = 数组等价去重(子表.map((a) => a[列名])).filter((a) => a != null)
+                var 合并的数组 = 子表.map((a) => a[列名]).filter((a) => a != null)
                 return { ...s, [列名]: 合并的数组 }
             }, {} as { [K in keyof A]: A[K][] })
             return 合并后对象
