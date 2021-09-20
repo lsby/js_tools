@@ -162,3 +162,39 @@ export function 等价<A>(a: A, b: A) {
 export function 数组等价去重<A>(数组: A[]) {
     return _.uniqWith(数组, 等价)
 }
+
+/**
+ * 输入:
+ * ```
+ * {
+ *  姓名: [1, 2, 3],
+ *  年龄: ['1', '2', '3'],
+ * }
+ * ```
+ *
+ * 得到:
+ * ```
+ * [
+ *  {姓名: 1, 年龄: '1'},
+ *  {姓名: 2, 年龄: '2'},
+ *  {姓名: 3, 年龄: '3'},
+ * ]
+ * ```
+ */
+export function 对象构造表<A extends { [key: string]: unknown[] }>(输入: A): { [K in keyof A]: A[K] }[] {
+    var 字段 = Object.keys(输入)
+    var 值 = Object.values(输入)
+    var 行数 = 值[0].length
+
+    if (字段.length == 0) throw '必须有键'
+    if (行数 == 0) throw '必须有值'
+    if (值.map((a) => a.length).filter((a) => a != 行数).length != 0) throw '所有值的长度必须一致'
+
+    var r: { [K in keyof A]: A[K] }[] = []
+    for (var i = 0; i < 行数; i++) {
+        var 行 = 字段.map((a) => ({ [a]: 输入[a][i] })).reduce((s, a) => Object.assign(s, a))
+        r.push(行 as any)
+    }
+
+    return r
+}

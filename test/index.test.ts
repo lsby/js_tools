@@ -89,3 +89,17 @@ it('数组缝合', async function () {
     var r = tools.数组缝合([1, 2, 3], [4, 5, 6])
     tools.断言相等(JSON.stringify(r), JSON.stringify([1, 4, 2, 5, 3, 6]))
 })
+it('对象构造表', async function () {
+    var r = tools.对象构造表({
+        姓名: [1, 2, 3],
+        年龄: ['1', '2', '3'],
+    })
+    tools.断言相等(
+        JSON.stringify(r),
+        JSON.stringify([
+            { 姓名: 1, 年龄: '1' },
+            { 姓名: 2, 年龄: '2' },
+            { 姓名: 3, 年龄: '3' },
+        ]),
+    )
+})
