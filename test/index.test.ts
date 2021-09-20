@@ -103,3 +103,7 @@ it('对象构造表', async function () {
         ]),
     )
 })
+it('区域数组', async function () {
+    var r = tools.区域数组(0, 2)
+    tools.断言相等(JSON.stringify(r), JSON.stringify([0, 1]))
+})

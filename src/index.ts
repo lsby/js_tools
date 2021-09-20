@@ -198,3 +198,9 @@ export function 对象构造表<A extends { [key: string]: unknown[] }>(输入: 
 
     return r
 }
+
+export function 区域数组(s: number, e: number) {
+    return Array(e - s)
+        .fill(null)
+        .map((_, i) => i)
+}
