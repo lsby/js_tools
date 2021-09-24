@@ -70,6 +70,21 @@ it('对表合并行', async function () {
             { id: [2], 姓名: 'b', 标签: ['b1'] },
         ]),
     )
+
+    var 表3 = [
+        { id: 1, 姓名: 'a', 标签: 'a' },
+        { id: 1, 姓名: 'a', 标签: 'a' },
+        { id: 1, 姓名: 'a', 标签: 'b' },
+        { id: 2, 姓名: 'b', 标签: 'c' },
+    ]
+    var 合并后3 = tools.对表合并行(表3, 'id', { 标签: true }, true)
+    tools.断言相等(
+        JSON.stringify(合并后3),
+        JSON.stringify([
+            { id: 1, 姓名: 'a', 标签: ['a', 'b'] },
+            { id: 2, 姓名: 'b', 标签: ['c'] },
+        ]),
+    )
 })
 it('多重笛卡尔积', async function () {
     var r = tools.多重笛卡尔积([1, 2, 3], [4, 5])

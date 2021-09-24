@@ -140,7 +140,12 @@ export function 对表合并行<
     A extends { [key: string]: unknown },
     B extends keyof A,
     C extends { [K in keyof A]?: true },
->(输入表: A[], 主字段: B, 合并字段: C): { [K in keyof A]: 对表合并行_返回值计算<C, K, A> }[] {
+>(
+    输入表: A[],
+    主字段: B,
+    合并字段: C,
+    是否去重: boolean = false,
+): { [K in keyof A]: 对表合并行_返回值计算<C, K, A> }[] {
     return 数组等价去重(输入表.map((a) => a[主字段]))
         .filter((a) => a != null)
         .map((主字段值) => {
@@ -148,6 +153,7 @@ export function 对表合并行<
             var 列名们 = Object.keys(输入表[0])
             var 合并后对象 = 列名们.reduce((s, 列名) => {
                 var 结果数组 = 子表.map((a) => a[列名]).filter((a) => a != null)
+                if (是否去重) 结果数组 = 数组等价去重(结果数组) as any
                 return { ...s, [列名]: !合并字段[列名] ? 结果数组[0] : 结果数组 }
             }, {} as { [K in keyof A]: A[K][] })
             return 合并后对象
