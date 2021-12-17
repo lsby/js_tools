@@ -12,7 +12,11 @@ export function 断言相等(变量: Number | Boolean | String, 值: Number | Bo
     if (变量 != 值) throw `断言失败: 期待: ${值} 实际: ${变量}`
 }
 export function 断言文本相等(变量1: any, 变量2: any) {
-    return JSON.stringify(变量1) == JSON.stringify(变量2)
+    var c1 = JSON.stringify(变量1)
+    var c2 = JSON.stringify(变量2)
+    if (c1 != c2) {
+        throw `断言失败: 期待: ${c1} 实际: ${c2}`
+    }
 }
 export function 断言为真(值: boolean) {
     if (值 != true) {
