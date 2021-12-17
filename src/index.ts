@@ -15,7 +15,7 @@ export function 断言文本相等(变量1: any, 变量2: any) {
     var c1 = JSON.stringify(变量1)
     var c2 = JSON.stringify(变量2)
     if (c1 != c2) {
-        throw `断言失败: 期待: ${c1} 实际: ${c2}`
+        throw `断言失败: 值1: ${c1} 值2: ${c2}`
     }
 }
 export function 断言为真(值: boolean) {
