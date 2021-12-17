@@ -24,22 +24,6 @@ it('重复字符串', async function () {
     var r = tools.重复字符串('1', 2, '')
     tools.断言为真(r == '11')
 })
-it('合并表', async function () {
-    var 表 = [
-        { id: 1, 姓名: 'a', 标签: 'a1' },
-        { id: 1, 姓名: 'a', 标签: 'a2' },
-        { id: 1, 姓名: 'a', 标签: 'a3' },
-        { id: 2, 姓名: 'b', 标签: 'b1' },
-    ]
-    var 合并后 = tools.合并表(表, 'id')
-    tools.断言相等(
-        JSON.stringify(合并后),
-        JSON.stringify({
-            '1': { id: [1], 姓名: ['a'], 标签: ['a1', 'a2', 'a3'] },
-            '2': { id: [2], 姓名: ['b'], 标签: ['b1'] },
-        }),
-    )
-})
 it('对表合并行', async function () {
     var 表1 = [
         { id: 1, 姓名: 'a', 标签: 'a1' },

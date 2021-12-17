@@ -11,6 +11,9 @@ export function 断言相等(变量: Number | Boolean | String, 值: Number | Bo
     }
     if (变量 != 值) throw `断言失败: 期待: ${值} 实际: ${变量}`
 }
+export function 断言文本相等(变量1: any, 变量2: any) {
+    return JSON.stringify(变量1) == JSON.stringify(变量2)
+}
 export function 断言为真(值: boolean) {
     if (值 != true) {
         throw `断言失败: 期待: true 实际: ${值}`
@@ -38,47 +41,6 @@ export function 重复字符串(字符串: string, 重复次数: number, 分割�
         .fill(null)
         .map((_) => 字符串)
         .join(分割符号)
-}
-
-/**
- * @deprecated 这个可能不太科学, 推荐使用`对表合并行`
- *
- * 按主字段合并表
- *
- * 表:
- * ```
- * [
- *  { id: 1, 姓名: 'a', 标签: 'a1' },
- *  { id: 1, 姓名: 'a', 标签: 'a2' },
- *  { id: 1, 姓名: 'a', 标签: 'a3' },
- *  { id: 2, 姓名: 'b', 标签: 'b1' },
- * ]
- * ```
- *
- * 以id为主字段合并后:
- * ```
- * {
- *  '1': { id: [1], 姓名: ['a'], 标签: ['a1', 'a2', 'a3'] },
- *  '2': { id: [2], 姓名: ['b'], 标签: ['b1'] },
- * }
- * ```
- */
-export function 合并表<A extends { [key: string]: string | number | boolean }, B extends keyof A>(
-    输入表: A[],
-    主字段: B,
-): { [key: string]: { [K in keyof A]: A[K][] } } {
-    return [...new Set(输入表.map((a) => a[主字段]))]
-        .filter((a) => a != null)
-        .map((a) => a.toString())
-        .reduce((s, 主字段值) => {
-            var 子表 = 输入表.filter((b) => b[主字段] == 主字段值)
-            var 列名们 = Object.keys(输入表[0])
-            var 合并后对象 = 列名们.reduce((s, 列名) => {
-                var 合并的数组 = [...new Set(子表.map((a) => a[列名]))].filter((a) => a != null)
-                return { ...s, [列名]: 合并的数组 }
-            }, {} as { [K in keyof A]: A[K][] })
-            return { ...s, [主字段值]: 合并后对象 }
-        }, {} as { [key: string]: { [K in keyof A]: A[K][] } })
 }
 
 export function 笛卡尔积(数组1: unknown[], 数组2: unknown[]) {
